@@ -1,9 +1,16 @@
 from django.db import models
-# from django.contrib.auth.models import User
 
-# Create your models here.
+class Author(models.Model):
+    author_name=models.CharField(max_length=70)
+
+    def __str__(self):
+        print(self.author_name)
+        return self.author_name
+
 class Book(models.Model):
-    # user = models.OneToOneField(User, on_delete=models.CASCADE,primary_key= True)
-    book_name = models.CharField(max_length= 70)
-    book_cat = models.CharField(max_length= 70)
-    book_publish_year= models.DateField()
+    book_name=models.CharField(max_length=50)
+    book_publish_year=models.DateField()
+    authors=models.ManyToManyField(Author)
+
+    def  written_by(self):
+        return " , ".join([str(p) for p in self.authors.all()])

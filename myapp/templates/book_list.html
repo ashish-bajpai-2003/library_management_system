@@ -1,0 +1,38 @@
+<!-- templates/book_list.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Search</title>
+    <style>
+        body{
+        background-color : yellow;
+        }
+    </style>
+</head>
+<body>
+    <h1>Book Search Results</h1>
+    <div>
+        {% if books %}
+            <ul>
+                {% for book in books %}
+                    <li>
+                        <strong>{{ book.book_name }}</strong> by 
+                        {% for author in book.authors.all %}
+                            {{author.author_name}}
+                        {% endfor %}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No books found matching your search criteria.</p>
+        {% endif %}
+    </div>
+
+    {% if query == '' %}
+        <p>Showing all books</p>
+    {% endif %}
+
+</body>
+</html>

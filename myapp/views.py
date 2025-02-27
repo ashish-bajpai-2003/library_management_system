@@ -3,6 +3,8 @@ from .forms import SignUpForm, LoginForm
 from django.contrib import messages
 from django.contrib.auth import logout
 from django.contrib.auth import authenticate, login
+from .models import Book
+from django.db.models import Q
 
 # from .models import Post
 # Create your views here.
@@ -53,3 +55,14 @@ def user_login(request):
         return render(request, 'login.html', {'form': form})
     else:
         return HttpResponseRedirect('/')
+    
+
+def search_books(request):
+    query = request.GET.get('q','')
+    if query:
+        books = Book.objects.filter(
+            Q(book_name__icontains=query) | Q(authors__author_name__icontains=query) | Q(book_publish_year__icontains = query)
+        ).distinct()
+    else:
+        books = Book.objects.all()
+    return render(request, 'book_list.html', {'books': books, 'query': query})
