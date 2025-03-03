@@ -20,10 +20,14 @@ from myapp import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.home),
+    path('', views.home,name = 'home'),
     path('signup/', views.user_signup , name ='signup'),
     path('dashboard/', views.dashboard , name ='dashboard'),
     path('user_logout/', views.user_logout , name ='user_logout'),
     path('user_login/', views.user_login , name ='user_login'),
     path('search/', views.search_books, name='search_books'),
+    path('borrow/<int:book_id>/' , views.borrow_book,name = 'borrow_book'),
+    path('return/<int:borrow_id>/',views.return_book,name = 'return_book'),
+    path('add_book/', views.add_book, name = 'add_book'),
+    path('delete_book/<int:book_id>/', views.delete_book,name= 'delete_book'),
 ]

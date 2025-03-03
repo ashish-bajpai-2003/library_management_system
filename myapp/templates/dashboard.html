@@ -1,7 +1,35 @@
 {% extends 'base.html' %}
-{% load static %}
-{% block content %}
 
-<div class = "col-sm-10">
-    <h5 class = "text-white my-3 mr-4">Dashboard Page</h5>
-{% endblock content %}
+{% block content %}
+    <div class="container mt-5">
+        <h3>Dashboard</h3>
+
+        <!-- Show 'Add New Book' button only for admin -->
+        {% if user.is_superuser %}
+            <a href="{% url 'add_book' %}" class="btn btn-success mb-3">Add New Book</a>
+        {% endif %}
+
+        <h4>Books List</h4>
+        <ul class="list-group">
+            {% for book in books %}
+                <li class="list-group-item">
+                    <h5>{{ book.book_name }}</h5>
+                    {% comment %} <p>Author: {{book.authors}}</p> {% endcomment %}
+                    {% for auth in book.authors.all %}
+                        <h6 class = "card-subtitle mb-2 text-muted">by {{auth.author_name}}</h6>
+                    {% endfor %}
+                    <p>Published Year: {{ book.book_publish_year }}</p>
+                    
+                    <!-- Show 'Borrow this Book' button for common users -->
+                    {% if not user.is_superuser %}
+                        <a href="{% url 'borrow_book' book.id %}" class="btn btn-primary">Borrow this Book</a>
+                    {% endif %}
+                    
+                    {% if user.is_superuser %}
+                        <a href="{% url 'delete_book' book.id %}" class="btn btn-danger">Delete</a>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}
