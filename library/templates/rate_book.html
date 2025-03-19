@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load  static  %}
+{% block content %}
+<div>
+<h2 style="margin-left:20px;">Rate {{ book.title }}</h2>
+<form method="post" style="margin-left:20px;">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-success">Submit Rating</button><br><br>
+</form>
+<a href="{% url 'dashboard' %}"><input type="submit" class="btn btn-info" value="Back to Booklist"></a>
+</div>
+{% endblock content %}

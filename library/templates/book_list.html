@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <h3>Available Books</h3>
+    
+    <ul>
+        {% for book in books %}
+            <li>
+                <h5>{{ book.book_name }}</h5>
+                <p>Author: {{ book.author }}</p>
+                <p>Published on: {{ book.publish_date }}</p>
+                <p>Available Copies: {{ book.available_copies }}</p>
+
+                {% if book.available_copies > 0 %}
+                    <a href="{% url 'book_detail' book.id %}" class="btn btn-success">Borrow this Book</a>
+                {% else %}
+                    <h6><i><p>Sorry, no copies are available right now.</p></i></h6>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

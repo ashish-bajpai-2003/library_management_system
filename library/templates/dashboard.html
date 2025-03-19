@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<style>
+    h2{
+        color:yellow;
+    }
+
+    button{
+        color : green;
+    }
+</style>
+    <h1>Dashboard Page</h1>
+    
+    <center><h2><i>Welcome in Our Library</i></h2></center>
+    <div>
+        <a href="{% url 'search_books' %}" class="button">View Books</a>
+    </div>
+
+{% endblock content %}

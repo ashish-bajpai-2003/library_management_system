@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <title>Document</title>
+</head>
+<body>
+    <div class= "container-fluid bg-dark">
+        {% include 'navbar.html' %}
+    </div>
+    <div class = "container">
+        <div class= 'row'>
+            <div class = 'col-sm-12'>
+                {% block msg %}
+                {% endblock msg %}
+            </div>
+        </div>
+        <div class= "row">
+            {% block side %}
+            {% endblock side %}
+
+            {% block content %}
+            {% comment %} {% endblock content %} {% endcomment %}
+        </div>
+    </div>
+    <script src = "{% static 'js/bootstrap.js' %}"></script>
+    <script src = "{% static 'js/jquery.js' %}"></script>
+    <script src = "{% static 'js/popper.min.js' %}"></script>
+    {% endblock content %}
+</body>
+</html>

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<form method="POST" novalidate>
+    {% csrf_token %}
+    {% comment %} {% for fm in form %}<br> {% endcomment %}
+    <div class = "form-group">
+        {% comment %} {{fm.label_tag}} {{fm}} <br> {{fm.errors|striptags}}  {% endcomment %}
+        {{form.as_p}}
+    {% comment %} {% endfor %} {% endcomment %}
+</div>
+    <button type="submit">Sign Up</button>
+</form>
+<br>
+<p>Already have an account? <a href="{% url 'user_login' %}">Login here</a></p>
+{%  endblock content %}
