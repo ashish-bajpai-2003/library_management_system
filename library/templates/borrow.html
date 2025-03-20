@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="col-sm-5"style="margin-left: 250px;">
+    {% if messages %}
+{% for message in messages %}
+    <p {% if message.tags %} class="alert alert-{{message.tags}} mb-5" {% endif %}>{{message}}</p>
+{% endfor %}
+{% endif %}
+<h3 class="text-white my-4" ><i>Borrow Book</i></h3>
+<form action="" method='POST'>
+    {% csrf_token %} 
+        {% for fm in form %}
+        <div class="form-group">
+            {{fm.label_tag}}{{fm}}{{fm.errors|striptags}}
+        </div>
+        {% endfor %}<br>
+
+        <input type="submit" value="Submit" class="btn btn-info">
+    </form>
+</div>
+{% endblock content %}

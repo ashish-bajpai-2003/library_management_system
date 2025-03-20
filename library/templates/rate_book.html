@@ -1,13 +1,21 @@
 {% extends 'base.html' %}
-{% load  static  %}
+
 {% block content %}
 <div>
-<h2 style="margin-left:20px;">Rate {{ book.title }}</h2>
-<form method="post" style="margin-left:20px;">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-success">Submit Rating</button><br><br>
-</form>
-<a href="{% url 'dashboard' %}"><input type="submit" class="btn btn-info" value="Back to Booklist"></a>
+    <h2>Rate {{ book.book_name }}</h2>
+    
+   
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}  
+        <button type="submit" class="btn btn-success">Submit Rating</button>
+    </form>
+
+
+    <div>
+        <h4>Average Rating: {{ book.average_rating }}</h4>
+    </div>
+
+    <a href="{% url 'book_detail' pk=book.id %}" class="btn btn-info">Back to Book Details</a>
 </div>
-{% endblock content %}
+{% endblock %}

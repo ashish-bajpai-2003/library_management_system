@@ -7,6 +7,7 @@
     <div class="card" style="width: 18rem;">
         <div class="card-body">
             <h5 class="card-title"><strong>{{ book.book_name }}</strong></h5>
+        
 
             <h6 class="card-subtitle mb-2 text-body-secondary">by
                 {% for auth in book.authors.all %}
@@ -15,22 +16,21 @@
             </h6>
 
             <p class="card-text">Published on: {{ book.publish_date }}</p>
-            <h5>Rating: {{ book.book_rating }} / 5</h5>
+            <h5>Average Rating: {{ book.average_rating }} / 5</h5>
             
             <a href="{% url 'rate_book' book.id %}">
                 <input type="submit" value="Rate this book" class="btn btn-warning">
             </a>
 
-            {% if has_borrowed %}
-                <a href="{% url 'return_book' book.id %}">
-                    <input type="submit" value="Return this book" class="btn btn-danger mt-3">
-                </a>
-            {% else %}
-           
-                <a href="{% url 'issue_book' book.id %}">
-                    <input type="submit" value="Borrow this book" class="btn btn-success mt-3">
-                </a>
+        {% if book.available_copies > 0 and not request.user.is_superuser %}
+            <a href="{% url 'borrow_book' book.id %}" class="btn btn-primary">Borrow</a>
+        {% endif %}
+    
+        {% for borrow in book.borrow_set.all %}
+            {% if borrow.user == request.user and not borrow.is_returned %}
+                <a href="{% url 'return_book' borrow.id %}" class="btn btn-success">Return</a>
             {% endif %}
+        {% endfor %}
         </div>
     </div>
 

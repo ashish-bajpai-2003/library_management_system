@@ -30,9 +30,12 @@ urlpatterns = [
     path('comments/<int:id>/',views.addcomment,name='comment'),
     path('like/<int:id>/',views.book_like, name='like-book'),
     path('logout/' , views.logout , name = 'user_logout'),
-    path('rate/<int:pk>/',views.rate_book, name='rate_book'),
+    path('rate/<int:book_id>/',views.rate_book, name='rate_book'),
     path('deletecomment/<int:id>/' , views.deletecomment, name = 'delcomment'),
     path('issue_book/<int:book_id>/' , views.issue_book, name = 'issue_book'),
     path('books/', views.book_list,name='book_list'),
     path('book/return/<int:book_id>/', views.return_book, name='return_book'),
+    path('borrow/<int:book_id>/',views.borrow_book, name='borrow_book'),
+    path('return/<int:borrow_id>/', views.return_book, name='return_book'),
+    path('logout/', views.user_logout, name='user_logout'), 
 ]

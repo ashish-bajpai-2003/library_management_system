@@ -1,6 +1,6 @@
 
 from django import forms
-from .models import Book , Comment
+from .models import Book , Comment, BookRating , BorrowRecord
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
@@ -31,5 +31,17 @@ class Usercomment(forms.ModelForm):
 
 class RatingForm(forms.ModelForm):
     class Meta:
-        model = Book
-        fields=['book_rating']
+        model = BookRating
+        fields=['rating']
+
+
+class Borrowform(forms.ModelForm):
+    class Meta:
+        model=BorrowRecord
+        fields=['book','return_date','due_date']
+        widgets={
+                'book': forms.Select(attrs={'class': 'form-control'}),
+                'return_date':forms.TextInput(attrs={'class':'form-control'}),
+               'due_date':forms.TextInput(attrs={'class':'form-control'}),
+        }
+    

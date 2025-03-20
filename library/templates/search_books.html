@@ -5,21 +5,19 @@
 
     {% if books %}
         <div class="row">
-            {% for book in books %}
-                
+            {% for book in books %} 
                 <div class="col-md-4 mb-4"> 
                     <div class="card" style="width: 18rem;">
 
                         <div class="card-body">
                             
                             <h5 class="card-title"><strong>{{ book.book_name }}</strong></h5>
-
                             <h6 class="card-subtitle mb-2 text-body-secondary">by
                                 {% for auth in book.authors.all %}
                                     {{ auth.author_name }}
                                 {% endfor %}
                             </h6>
-                      
+                            
                             <a href="{% url 'book_detail' book.id %}" class="btn btn-primary">View Detail</a> 
                             &nbsp;&nbsp;<a href="{% url 'comment' book.id %}"><i class="fa-solid fa-comment" style="font-size:20px; margin-top:20px;"></i></a>
                             Comments

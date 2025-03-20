@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Book,Author,Comment,BookIssue
+from .models import Book,Author,Comment,BookIssue,BorrowRecord
 
 # Register your models here.
 @admin.register(Author)
@@ -8,12 +8,8 @@ class AuthorAdmin(admin.ModelAdmin):
 
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
-    list_display = ['id' , 'book_name', 'publish_date', 'written_by']
-
-
-# @admin.register(Like)
-# class LikeAdmin(admin.ModelAdmin):
-#     list_display = ['user' , 'book']
+    list_display = ['id' , 'book_name', 'publish_date', 'written_by','available_copies','average_rating', 'total_copies']
+    search_fields = ['book_name']
 
 
 
@@ -24,3 +20,7 @@ class CommentAdmin(admin.ModelAdmin):
 @admin.register(BookIssue)
 class BookIssueAdmin(admin.ModelAdmin):
     list_display = ['book', 'user','issue_date', 'return_date']
+
+@admin.register(BorrowRecord)
+class BorrowAdmin(admin.ModelAdmin):
+    list_display=['user','book','borrow_date','return_date','due_date','is_returned']
