@@ -2,12 +2,13 @@ from django.shortcuts import render , redirect , HttpResponse , HttpResponseRedi
 from django.contrib.auth.forms import UserCreationForm
 from .forms import  CustomUserCreationForm , LoginForm , RatingForm, Borrowform
 from django.contrib import messages
-from .models import Book, Comment , User , BookIssue
+from .models import Book, Comment , User , BookIssue , BorrowRecord
 from django.db.models import Q
+from .models import Book, BookRating
 from django.contrib.auth.models import User
 from django.contrib.auth import logout
 from django.contrib.auth import authenticate, login as django_login
-
+from datetime import date
 # Create your views here.
 def home(request):
     return render(request , 'home.html')
@@ -68,10 +69,23 @@ def login(request):
 def dashboard(request):
     return render(request , 'dashboard.html')
 
+from django.shortcuts import render, get_object_or_404
+from .models import Book, BorrowRecord
 
 def book_detail(request, pk):
-    book = get_object_or_404(Book, pk=pk)
-    return render(request, 'book_detail.html', {'book': book})
+    book=Book.objects.get(pk=pk)
+    user_rating = BookRating.objects.filter(book=book, user=request.user).first()
+    user_has_borrowed = book.borrowrecord_set.filter(user=request.user, is_returned=False).exists()
+    borrowed_books_count = BorrowRecord.objects.filter(user=request.user, is_returned=False).values('book').distinct().count()
+    user_reached_limit = borrowed_books_count >=5
+    if request.method=='POST':
+        text=request.POST.get('text')
+    
+        if text:
+            Comment.objects.create(user=request.user,book=book,text=text)
+            return redirect('viewsbook',pk=pk)
+    return render(request,'book_detail.html',{'book':book , 'user_has_borrowed':user_has_borrowed ,'user_reached_limit':user_reached_limit, 'user_rating' : user_rating})
+
 
 
 
@@ -99,14 +113,10 @@ def book_like(request, id):
 
     return redirect('comment', id=book.book.id)
 
-def user_logout(request):
-    logout(request) 
-    return HttpResponse('/') 
 
-# from django.shortcuts import render, redirect, get_object_or_404
-from .models import Book, BookRating
-from .forms import RatingForm
-from django.contrib import messages
+def userlogout(request):
+    logout(request) 
+    return redirect('home') 
 
 
 def rate_book(request, book_id):
@@ -177,42 +187,13 @@ def book_list(request):
     return render(request,'book_list.html',{'books':books})
 
 
-def return_book(request, book_id):
-    if not request.user.is_authenticated:
-        messages.error(request, 'You need to log in to return a book.')
-        return redirect('user_login')
-
-    book = Book.objects.filter(id=book_id).first()
-
-    if not book:
-        messages.error(request, 'Book not found.')
-        return redirect('book_list')
-
-
-    existing_issue = BookIssue.objects.filter(book=book, user=request.user, is_returned=False).first()
-
-    if existing_issue:
-   
-        existing_issue.returned = True
-        existing_issue.save()
-
-        book.available_copies += 1
-        book.save()
-
-        messages.success(request, f'{book.book_name} has been successfully returned!')
-    else:
-        messages.error(request, 'You have not borrowed this book.')
-
-    return redirect('book_list')
-
-
-
-from .models import Book, BorrowRecord
-from datetime import date
 def borrow_book(request, book_id):
     book = get_object_or_404(Book, id=book_id)
+    already_borrowed = BorrowRecord.objects.filter(user=request.user, book=book, is_returned=False).exists()
+    if already_borrowed:
+        messages.error(request, f"You have already borrowed '{book.book_name}'.")
     if request.method=="POST":
-        form=Borrowform(request.POST,instance=book)
+        form=Borrowform(request.POST)
         if form.is_valid():
             if book.available_copies > 0:
                 borrow = BorrowRecord.objects.create(user=request.user, book=book)
@@ -242,3 +223,15 @@ def return_book(request, borrow_id):
         messages.warning(request, "This book is already returned.")
 
     return redirect('home')
+
+def my_borrowed_books(request):
+    borrowed_books = BorrowRecord.objects.filter(user=request.user)
+    
+    returned_books = borrowed_books.filter(is_returned=True)
+    not_returned_books = borrowed_books.filter(is_returned=False)  
+
+    return render(request, 'borrowed.html', {
+        'borrowed_books':borrowed_books,
+        'not_returned_books': not_returned_books,
+        'returned_books': returned_books
+    })

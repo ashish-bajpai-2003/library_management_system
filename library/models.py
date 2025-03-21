@@ -20,6 +20,7 @@ class Book(models.Model):
     available_copies = models.IntegerField(default=1)
     book_sr_no = models.CharField(max_length=10, unique=True)
     total_copies = models.PositiveBigIntegerField(default=1)
+    status = models.CharField(max_length=10, default='available')
 
     def written_by(self):
         return " , ".join([str(p) for p in self.authors.all()])

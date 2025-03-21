@@ -14,7 +14,8 @@
     
     <center><h2><i>Welcome in Our Library</i></h2></center>
     <div>
-        <a href="{% url 'search_books' %}" class="button">View Books</a>
+        <a href="{% url 'search_books' %}" class="button">View Books</a><br>
+        <a href="{% url 'userlogout' %}">Logout</a> <br>
+        <a href="{% url 'my_borrowed_books' %}">All Borrow Books</a>
     </div>
-
 {% endblock content %}

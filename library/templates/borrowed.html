@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<h3 style="color:black;"class="my-4"></h3>
+<h2><i>My Borrowed Books</i></h2>
+{% if borrowed_books %}
+{% for book in borrowed_books %}
+    {% if not book.is_returned %}
+    <div class="row row-cols-1 row-cols-md-3 g-1">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">{{ book.book.book_name }}({{book.book.book_sr_no}}) / {{ book.book.book_cate }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Borrowed on: {{ book.issue_date }}</h6>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+{% endfor %}
+{% else %}
+<div class="col-12">
+    <p>No books found.</p>
+</div>
+{% endif %}
+{% endblock content %}
