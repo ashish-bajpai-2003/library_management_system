@@ -9,15 +9,23 @@
 
     <center><form class="d-flex col-sm-5"style = "margin-top : 200px;" role="search"action= "{% url 'search_books' %}" method = 'GET'>
         <input class="form-control me-2" type="search" placeholder="Search" name='q' aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
+        <button class="btn btn-outline-success mt-4" type="submit">Search</button>
     </form></center>
 
     <div class="container">
         
         <center><p>Please login or sign up to continue</p>
-        <a href="{% url 'user_signup' %}" class="button">Sign Up</a>
-        <a href="{% url 'user_login' %}" class="button">Login</a>
+        <a href="{% url 'user_signup' %}" class="button">Sign Up</a><br>
+        <a href="{% url 'user_login' %}" class="button">Login</a><br>
+        <a href="{% url 'social:begin' 'github' %}" class="btn btn-dark">
+            <i class="fab fa-github"></i> Login with GitHub
+        </a>
+        
+        <a href="{% url 'social:begin' 'google-oauth2' %}" class="btn btn-danger">
+            <i class="fab fa-google"></i> Login with Google
+        </a>
         </center>
+
     </div>
 
 {% endblock content %}

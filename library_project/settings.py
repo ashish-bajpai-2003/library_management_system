@@ -37,7 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'social_django',
     'library',
+    
 ]
 
 MIDDLEWARE = [
@@ -48,6 +50,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
 ROOT_URLCONF = 'library_project.urls'
@@ -63,6 +66,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -75,11 +81,24 @@ WSGI_APPLICATION = 'library_project.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME" : "my_library",
+        "USER" : "postgres",
+        "PASSWORD" : "root",
+        "HOST" : "127.0.0.1",
+        "PORT" : "5432",
+        
     }
 }
+
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
 
 # Password validation
@@ -122,3 +141,23 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+AUTHENTICATION_BACKENDS = {
+    'social_core.backends.github.GithubOAuth2',
+    'social_core.backends.google.GoogleOAuth2',
+   
+
+    'django.contrib.auth.backends.ModelBackend',
+    # 'django.authentication.EmailAuthBackend',
+}
+
+LOGIN_REDIRECT_URL = '/dashboard/'
+SOCIAL_AUTH_GITHUB_KEY = 'Ov23liuQ4ry1kGcOpXr8'
+SOCIAL_AUTH_GITHUB_SECRET = '12f175a09a8b7bd46e66f333585f1f1b9975f09e'
+
+
+LOGIN_REDIRECT_URL = '/dashboard/'
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '876892942440-tjfkautlpgc6j5iulunu59ub4qo9deva.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
+
